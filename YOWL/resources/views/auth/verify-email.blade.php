@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ asset('css/email.css') }}">
+    <title>Yowl — Vérification Email</title>
+</head>
+<body>
+
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-5 col-sm-8 col-11">
+
+                <div class="card">
+                    <div class="card-body text-center">
+
+                        <div class="logo">Yowl</div>
+
+                        <div class="icon-mail" style="font-size: 3rem; margin-bottom: 1rem;">📧</div>
+
+                        <h4 style="font-weight: 700; color: #333;">
+                            Vérifiez votre email !
+                        </h4>
+
+                        <p style="color: #666; font-size: 0.95rem; margin: 1rem 0 2rem;">
+                            Merci de vous être inscrit ! Avant de commencer, pourriez-vous vérifier votre adresse email en cliquant sur le lien que nous venons de vous envoyer ?
+                        </p>
+
+                        {{-- Message de succès si l'email est renvoyé --}}
+                        @if (session('status') == 'verification-link-sent' || session('message'))
+                            <div class="alert alert-success mb-3">
+                                ✅ Un nouveau lien de vérification a été envoyé !
+                            </div>
+                        @endif
+
+                        <div class="d-flex flex-column gap-3">
+                            <form method="POST" action="{{ route('verification.send') }}">
+                                @csrf
+                                <button type="submit" class="btn btn-primary w-100 py-2" style="border-radius: 10px;">
+                                    Renvoyer l'email
+                                </button>
+                            </form>
+
+                            <form method="POST" action="{{ route('logout') }}">
+                                @csrf
+                                <button type="submit" class="btn btn-link text-decoration-none text-muted" style="font-size: 0.85rem;">
+                                    Se déconnecter
+                                </button>
+                            </form>
+                        </div>
+
+                        <p style="margin-top: 1.5rem; font-size: 0.85rem; color: #aaa;">
+                            Vous n'avez pas reçu l'email ?<br>
+                            Vérifiez vos spams !
+                        </p>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

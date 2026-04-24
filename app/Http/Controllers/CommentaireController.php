@@ -10,9 +10,9 @@ class CommentaireController extends Controller
 {
     public function show($id)
     {
-    
+
         $post = Commentaire::with([
-                'user', 
+                'user',
                 'replies' => function($query) {
                     $query->withCount(['likes', 'dislikes']);
                 },
@@ -22,7 +22,7 @@ class CommentaireController extends Controller
                 },
                 'allReplies.user'
             ])
-            ->withCount(['likes', 'dislikes']) 
+            ->withCount(['likes', 'dislikes'])
             ->findOrFail($id);
 
         $embedData = null;
@@ -31,7 +31,7 @@ class CommentaireController extends Controller
                 $embed = new \Embed\Embed();
                 $embedData = $embed->get($post->lien);
             } catch (\Exception $e) {
-                
+
             }
         }
 
@@ -43,13 +43,13 @@ class CommentaireController extends Controller
         $validated = $request->validate([
             'content' => 'required|string|max:1000',
             'lien' => 'nullable|url',
-            'parent_id' => 'nullable|exists:commentaires,id', 
+            'parent_id' => 'nullable|exists:commentaires,id',
         ]);
 
         $commentaire = Commentaire::create([
             'content' => $validated['content'],
-            'user_id' => auth()->id(), 
-            'parent_id' => $request->parent_id, 
+            'user_id' => auth()->id(),
+            'parent_id' => $request->parent_id,
             'lien' => $request->lien ?? '',
         ]);
 
@@ -72,7 +72,7 @@ class CommentaireController extends Controller
     {
         $commentaire = Commentaire::findOrFail($id);
         if (auth()->id() !== $commentaire->user_id) return back();
-        
+
         $commentaire->delete();
         return back()->with('success', 'Supprimé !');
     }

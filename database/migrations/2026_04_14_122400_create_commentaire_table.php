@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('lien')->nullable();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->foreignId('parent_id')->nullable()->constrained('commentaires')->onDelete('cascade');
+            $table->foreignId('category_id')->nullable()->constrained()->onDelete('cascade');
 
             $table->timestamps();
         });
